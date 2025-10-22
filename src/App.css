@@ -1,0 +1,557 @@
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* App Container */
+.app {
+  min-height: 100vh;
+    min-width: 100vw;
+  background: linear-gradient(135deg, #e3f2fd 0%, #fff9c4 50%, #f8bbd0 100%);
+  background-size: 200% 200%;
+  animation: gradientShift 15s ease infinite;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+/* Enhanced Bubble Component Styles */
+.bubble-enhanced {
+  position: absolute;
+  bottom: -150px;
+  border-radius: 50%;
+  animation: bubble-float ease-in-out infinite;
+  filter: blur(0.5px);
+  
+  /* Efeito de bolha 3D realista */
+  background: 
+    radial-gradient(
+      circle at 30% 30%,
+      rgba(255, 255, 255, 0.9),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 70% 70%,
+      rgba(255, 255, 255, 0.4),
+      transparent 70%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      var(--bubble-color, rgba(33, 150, 243, 0.3)),
+      transparent
+    );
+  
+  box-shadow: 
+    inset 0 0 25px rgba(255, 255, 255, 0.5),
+    inset -5px -5px 15px rgba(0, 0, 0, 0.1),
+    0 10px 35px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.3);
+  
+  backdrop-filter: blur(3px);
+  transform-origin: center center;
+}
+
+/* Brilho principal no topo */
+.bubble-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 8%;
+  left: 18%;
+  width: 45%;
+  height: 45%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.95),
+    rgba(255, 255, 255, 0.6) 40%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  filter: blur(4px);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* Reflexo secundário */
+.bubble-enhanced::after {
+  content: '';
+  position: absolute;
+  bottom: 12%;
+  right: 12%;
+  width: 30%;
+  height: 30%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.6),
+    transparent 60%
+  );
+  border-radius: 50%;
+  filter: blur(3px);
+}
+
+@keyframes bubble-float {
+  0% {
+    transform: translateY(0) translateX(0) scale(0.7) rotate(0deg);
+    opacity: 0;
+  }
+  3% {
+    opacity: 0.75;
+  }
+  50% {
+    transform: translateY(-50vh) translateX(var(--x-offset, 30px)) scale(1) rotate(180deg);
+    opacity: 0.85;
+  }
+  97% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-115vh) translateX(calc(var(--x-offset, 30px) * 1.5)) scale(1.15) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+/* Efeito de pop quando a bolha estoura (opcional) */
+.bubble-enhanced.popping {
+  animation: pop 0.3s ease-out forwards;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+/* Animated Gradient */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Floating Bubbles */
+.bubble {
+  position: absolute;
+  bottom: -100px;
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: float-up linear infinite;
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes float-up {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(50px) scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* Different bubble sizes and colors */
+.bubble:nth-child(1) {
+  width: 60px;
+  height: 60px;
+  left: 10%;
+  background: rgba(33, 150, 243, 0.3);
+  animation-duration: 12s;
+  animation-delay: 0s;
+}
+
+.bubble:nth-child(2) {
+  width: 40px;
+  height: 40px;
+  left: 25%;
+  background: rgba(255, 193, 7, 0.3);
+  animation-duration: 10s;
+  animation-delay: 2s;
+}
+
+.bubble:nth-child(3) {
+  width: 80px;
+  height: 80px;
+  left: 40%;
+  background: rgba(100, 181, 246, 0.3);
+  animation-duration: 15s;
+  animation-delay: 4s;
+}
+
+.bubble:nth-child(4) {
+  width: 50px;
+  height: 50px;
+  left: 55%;
+  background: rgba(255, 152, 0, 0.3);
+  animation-duration: 11s;
+  animation-delay: 1s;
+}
+
+.bubble:nth-child(5) {
+  width: 70px;
+  height: 70px;
+  left: 70%;
+  background: rgba(33, 150, 243, 0.3);
+  animation-duration: 13s;
+  animation-delay: 3s;
+}
+
+.bubble:nth-child(6) {
+  width: 45px;
+  height: 45px;
+  left: 85%;
+  background: rgba(255, 193, 7, 0.3);
+  animation-duration: 14s;
+  animation-delay: 5s;
+}
+
+.bubble:nth-child(7) {
+  width: 55px;
+  height: 55px;
+  left: 15%;
+  background: rgba(100, 181, 246, 0.3);
+  animation-duration: 16s;
+  animation-delay: 6s;
+}
+
+.bubble:nth-child(8) {
+  width: 65px;
+  height: 65px;
+  left: 35%;
+  background: rgba(255, 152, 0, 0.3);
+  animation-duration: 12s;
+  animation-delay: 2.5s;
+}
+
+.bubble:nth-child(9) {
+  width: 50px;
+  height: 50px;
+  left: 60%;
+  background: rgba(33, 150, 243, 0.3);
+  animation-duration: 11s;
+  animation-delay: 4.5s;
+}
+
+.bubble:nth-child(10) {
+  width: 75px;
+  height: 75px;
+  left: 80%;
+  background: rgba(255, 193, 7, 0.3);
+  animation-duration: 13s;
+  animation-delay: 1.5s;
+}
+
+.container {
+  max-width: 600px;
+  width: 100%;
+  background: white;
+  border-radius: 30px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  padding: 40px 30px;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Logo Section */
+.logo-section {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.logo {
+  font-size: 3em;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-bottom: 5px;
+}
+
+.logo .odonto {
+  color: #2196F3;
+}
+
+.logo .fun {
+  background: linear-gradient(135deg, #FFC107 0%, #FF9800 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  color: #64B5F6;
+  font-size: 1em;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: lowercase;
+}
+
+/* Carousel Styles */
+.carousel-container {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+  border-radius: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.carousel-wrapper {
+  display: flex;
+  height: 100%;
+  transition: transform 0.5s ease-in-out;
+}
+
+.carousel-slide {
+  min-width: 100%;
+  height: 100%;
+}
+
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Carousel Buttons */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  color: #2196F3;
+  border: none;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.carousel-btn:hover {
+  background: white;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-btn.prev {
+  left: 15px;
+}
+
+.carousel-btn.next {
+  right: 15px;
+}
+
+/* Carousel Indicators */
+.carousel-indicators {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid white;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.indicator.active {
+  background: white;
+  width: 30px;
+  border-radius: 5px;
+}
+
+.indicator:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* Links Container */
+.links-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+/* Link Buttons */
+.link-button {
+  display: block;
+  padding: 18px 25px;
+  background: var(--button-color);
+  color: white;
+  text-decoration: none;
+  border-radius: 15px;
+  font-weight: 600;
+  font-size: 1.05em;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.link-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: left 0.3s ease;
+}
+
+.link-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.link-button:hover::before {
+  left: 100%;
+}
+
+.link-button:active {
+  transform: translateY(-1px);
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 2px solid #e3f2fd;
+}
+
+.footer p {
+  color: #64B5F6;
+  font-size: 0.95em;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 30px 20px;
+  }
+
+  .logo {
+    font-size: 2.5em;
+  }
+
+  .carousel-container {
+    height: 220px;
+  }
+
+  .carousel-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+  }
+
+  .link-button {
+    padding: 16px 20px;
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 480px) {
+  .app {
+    padding: 10px;
+  }
+
+  .container {
+    border-radius: 20px;
+    padding: 25px 15px;
+  }
+
+  .logo {
+    font-size: 2em;
+  }
+
+  .carousel-container {
+    height: 180px;
+    border-radius: 15px;
+  }
+
+  .carousel-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+
+  .carousel-btn.prev {
+    left: 10px;
+  }
+
+  .carousel-btn.next {
+    right: 10px;
+  }
+
+  .link-button {
+    padding: 14px 18px;
+    font-size: 0.95em;
+    border-radius: 12px;
+  }
+}
