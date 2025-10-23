@@ -8,10 +8,10 @@ const Bubble = ({ index, totalBubbles }) => {
   useEffect(() => {
     // Gerar propriedades aleatórias para cada bolha
     const size = 35 + Math.random() * 60 // 35px a 95px
-    const left = (index / totalBubbles) * 100 + (Math.random() * 8 - 4) // Distribuição melhor
+    const left = (index / totalBubbles) * 200 + (Math.random() * 8 - 4) // Distribuição melhor
     
     // 💡 Aumente o duration para deixar a animação mais lenta
-    const duration = 15 + Math.random() * 15 // 15s a 30s (era 10s a 18s)
+    const duration = 6 + Math.random() * 15 // 15s a 30s (era 10s a 18s)
     
     // 💡 Aumente o delay para atrasar o início e espaçar mais o aparecimento
     const delay = Math.random() * 35 // 0s a 40s (era 0s a 25s)
