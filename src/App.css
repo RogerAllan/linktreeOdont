@@ -4,7 +4,12 @@
   padding: 0;
   box-sizing: border-box;
 }
-
+@font-face {
+  font-family: 'Knicknack';
+  src: url('/knicknack-regular.otf') format('opentype');
+  font-weight: 500; /* Define um peso para o arquivo regular */
+  font-style: normal;
+}
 body {
   font-family: 'Comfortaa', regular, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -457,7 +462,7 @@ body {
   }
 
   .logo-image {
-    max-width: 200px;
+    max-width: 280px;
   }
 
   .subtitle {
@@ -570,8 +575,10 @@ body {
 }
 
 .footer p {
-  color: #64B5F6;
+  color: #123675;
   font-size: 1.5em;
+  /* A lista de fallback garante que o texto apareça mesmo sem Knicknack */
+  font-family: 'Knicknack', sans-serif; 
   font-weight: 500;
 }
 
@@ -638,5 +645,19 @@ body {
     padding: 14px 18px;
     font-size: 0.95em;
     border-radius: 12px;
+  }
+}
+@media (max-width: 400px) {
+  .container{
+    overflow-y: hidden;
+    margin-top: -1px;
+    height: 820px;
+
+  } 
+  .footer{
+    margin-top: -15px;
+  }
+  .app{
+    height: auto;
   }
 }

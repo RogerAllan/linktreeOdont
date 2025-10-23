@@ -135,7 +135,11 @@ function App() {
 
         {/* Rodapé */}
         <div className="footer">
-          <p>✨ Quero te ver sorrir ✨</p>
+          <p> Tenha um dia <span style={{ color: '#6abf4b', fontSize:'1.5em' }}>F</span>
+            <span style={{ color: '#e7a23b', fontSize:'1.5em' }}>U</span>
+            <span style={{ color: '#E590DB', fontSize:'1.5em' }}>N</span>
+            <span style={{ color: '#123675', fontSize:'1.5em' }}>!</span> </p>
+          
         </div>
       </div>
     </div>
