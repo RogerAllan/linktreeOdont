@@ -2,21 +2,28 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import Bubble from './components/Bubble.jsx'
 import logoImage from './assets/odontofun_logo_512x206.png'
+  // Imagens do carrossel
+import image1 from '../src/assets/1.jpg'
+import image2 from '../src/assets/2.jpg'
+import image3 from '../src/assets/3.jpg'
+import image4 from '../src/assets/4.jpg'
+import image5 from '../src/assets/5.jpg'
+import image6 from '../src/assets/6.jpg'
+import image7 from '../src/assets/7.jpg'
 
 function App() {
   const [currentSlide, setCurrentSlide] = useState(0)
 
-  // Imagens do carrossel
+  // 💡 Use as variáveis importadas no array de imagens
   const images = [
-    '../src/assets/1.jpg',
-    '../src/assets/2.jpg',
-    '../src/assets/3.jpg',
-    '../src/assets/4.jpg',
-    '../src/assets/5.jpg',
-    '../src/assets/6.jpg',
-    '../src/assets/7.jpg'
+    image1,
+    image2,
+    image3,
+    image4,
+    image5,
+    image6,
+    image7
   ]
-
   // Links dos botões
   const links = [
     {
