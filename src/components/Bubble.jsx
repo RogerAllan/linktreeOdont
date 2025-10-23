@@ -14,7 +14,7 @@ const Bubble = ({ index, totalBubbles }) => {
     const duration = 15 + Math.random() * 15 // 15s a 30s (era 10s a 18s)
     
     // 💡 Aumente o delay para atrasar o início e espaçar mais o aparecimento
-    const delay = Math.random() * 60 // 0s a 40s (era 0s a 25s)
+    const delay = Math.random() * 40 // 0s a 40s (era 0s a 25s)
     
     const xOffset = Math.random() * 80 - 40 // -40px a 40px
     
