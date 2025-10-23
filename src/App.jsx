@@ -1,56 +1,59 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import Bubble from './components/Bubble.jsx'
-import logoImage from './assets/odontofun_logo_512x206.png' // <-- 1. ADICIONEI ISSO
+import logoImage from './assets/odontofun_logo_512x206.png'
 
 function App() {
   const [currentSlide, setCurrentSlide] = useState(0)
 
-  // Imagens do carrossel (você pode substituir por imagens reais)
+  // Imagens do carrossel
   const images = [
-    'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=800&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=800&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=800&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=800&h=400&fit=crop'
+    '../src/assets/1.jpg',
+    '../src/assets/2.jpg',
+    '../src/assets/3.jpg',
+    '../src/assets/4.jpg',
+    '../src/assets/5.jpg',
+    '../src/assets/6.jpg',
+    '../src/assets/7.jpg'
   ]
 
   // Links dos botões
   const links = [
     {
       id: 1,
-      title: '🏠 Visite Nosso Site',
+      title: 'Visite Nosso Site',
       url: 'https://odontofun.com.br',
       color: '#2196F3'
     },
     {
       id: 2,
-      title: '📅 Agende sua Consulta',
-      url: 'https://odontofun.com.br/agendamento',
-      color: '#FFC107'
+      title: 'Método Odonto Fun',
+      url: 'https://metodoodontofun.com.br/masterclass/?fbclid=PAZXh0bgNhZW0CMTEAAafIUFOmMhvAzvFCEKawkQ3AiVeL-VQYnkef5zIPPkF6BbQeKZPZXzNQg1Jjjw_aem_vGuuqR02Wcqwk508Z1UoQg',
+      color: '#e7a23b'
     },
     {
       id: 3,
-      title: '📸 Instagram',
-      url: 'https://instagram.com/odontofun',
-      color: '#E91E63'
+      title: 'Quero agendar uma consulta',
+      url: 'https://wa.me/5547933630178',
+      color: '#123675'
     },
     {
       id: 4,
-      title: '💬 WhatsApp',
-      url: 'https://wa.me/5511999999999',
-      color: '#4CAF50'
-    },
-    {
-      id: 5,
-      title: '📍 Nossa Localização',
-      url: 'https://maps.google.com',
+      title: 'Urgência? Ligue para nós!',
+      url: 'tel:+554733630178', // <-- 🔥 ALTERADO AQUI
       color: '#FF5722'
     },
     {
+      id: 5,
+      title: 'Administrativo',
+      url: 'https://wa.me/554784930178',
+      color: '#4CAF50'
+    },
+    {
       id: 6,
-      title: '❓ Dúvidas Frequentes',
-      url: 'https://odontofun.com.br/faq',
-      color: '#9C27B0'
+      title: 'Dúvidas Frequentes',
+      url: 'https://odontofun.com.br/duvidas-frequentes/',
+      color: '#E590DB'
     }
   ]
 
@@ -59,35 +62,23 @@ function App() {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % images.length)
     }, 4000)
-
     return () => clearInterval(interval)
   }, [images.length])
 
-  const goToSlide = (index) => {
-    setCurrentSlide(index)
-  }
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % images.length)
-  }
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + images.length) % images.length)
-  }
+  const goToSlide = (index) => setCurrentSlide(index)
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % images.length)
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + images.length) % images.length)
 
   return (
     <div className="app">
-      {/* Enhanced Floating Bubbles Background usando componente */}
       {[...Array(15)].map((_, index) => (
         <Bubble key={index} index={index} totalBubbles={15} />
       ))}
 
       <div className="container">
-        {/* Logo Section */}
+        {/* Logo */}
         <div className="logo-section">
-          {/* 2. ISSO FOI ALTERADO */}
           <img src={logoImage} alt="OdontoFun Logo" className="logo-image" />
-          
         </div>
 
         {/* Carousel */}
@@ -103,15 +94,11 @@ function App() {
             ))}
           </div>
 
-          {/* Carousel Controls */}
-          <button className="carousel-btn prev" onClick={prevSlide}>
-            ❮
-          </button>
-          <button className="carousel-btn next" onClick={nextSlide}>
-            ❯
-          </button>
+          {/* Controls */}
+          <button className="carousel-btn prev" onClick={prevSlide}>❮</button>
+          <button className="carousel-btn next" onClick={nextSlide}>❯</button>
 
-          {/* Carousel Indicators */}
+          {/* Indicators */}
           <div className="carousel-indicators">
             {images.map((_, index) => (
               <button
@@ -123,13 +110,13 @@ function App() {
           </div>
         </div>
 
-        {/* Links Buttons */}
+        {/* Botões */}
         <div className="links-container">
           {links.map((link) => (
             <a
               key={link.id}
               href={link.url}
-              target="_blank"
+              target={link.url.startsWith('http') ? '_blank' : undefined}
               rel="noopener noreferrer"
               className="link-button"
               style={{ '--button-color': link.color }}
@@ -139,9 +126,9 @@ function App() {
           ))}
         </div>
 
-        {/* Footer */}
+        {/* Rodapé */}
         <div className="footer">
-          <p>✨ Sorrisos felizes, crianças saudáveis! ✨</p>
+          <p>✨ Quero te ver sorrir ✨</p>
         </div>
       </div>
     </div>

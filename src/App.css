@@ -6,7 +6,7 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Comfortaa', regular, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -15,7 +15,7 @@ body {
 .app {
   min-height: 100vh;
     min-width: 100vw;
-  background: linear-gradient(135deg, #e3f2fd 0%, #fff9c4 50%, #f8bbd0 100%);
+  background: linear-gradient(135deg, #e3f2fd 0%, #7acaff 50%, #e590db 100%);
   background-size: 200% 200%;
   animation: gradientShift 15s ease infinite;
   padding: 20px;
@@ -282,11 +282,14 @@ body {
 .container {
   max-width: 600px;
   width: 100%;
-  background: white;
+  border: 3px solid #123675;  
+  background: #fffffff1;
+  backdrop-filter: blur(10px);
   border-radius: 30px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   overflow: hidden;
   padding: 40px 30px;
+  margin-top: 50px;
   animation: fadeIn 0.6s ease-in-out;
 }
 
@@ -337,6 +340,7 @@ body {
 .carousel-container {
   position: relative;
   width: 100%;
+  border: 1px solid #123675;  
   height: 280px;
   overflow: hidden;
   border-radius: 20px;
@@ -346,7 +350,7 @@ body {
 
 .carousel-wrapper {
   display: flex;
-  height: 100%;
+  height: 115%;
   transition: transform 0.5s ease-in-out;
 }
 
@@ -435,17 +439,98 @@ body {
   gap: 15px;
   margin-bottom: 25px;
 }
+/* Smartphones em portrait (320px - 480px) */
+@media (max-width: 480px) {
+  .app {
+    padding: 10px;
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+
+  .container {
+    border-radius: 20px;
+    padding: 25px 16px;
+  }
+
+  .logo-section {
+    margin-bottom: 20px;
+  }
+
+  .logo-image {
+    max-width: 200px;
+  }
+
+  .subtitle {
+    font-size: 0.85em;
+    letter-spacing: 1.5px;
+  }
+
+  .carousel-container {
+    height: 200px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+  }
+
+  .carousel-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+
+  .carousel-btn.prev {
+    left: 8px;
+  }
+
+  .carousel-btn.next {
+    right: 8px;
+  }
+
+  .carousel-indicators {
+    bottom: 10px;
+    gap: 6px;
+  }
+
+  .indicator {
+    width: 8px;
+    height: 8px;
+  }
+
+  .indicator.active {
+    width: 24px;
+  }
+
+  .links-container {
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .link-button {
+    padding: 14px 16px;
+    font-size: 0.95em;
+    border-radius: 12px;
+  }
+
+  .footer {
+    padding-top: 15px;
+  }
+
+  .footer p {
+    font-size: 0.85em;
+  }
+}
 
 /* Link Buttons */
 .link-button {
   display: block;
   padding: 18px 25px;
   background: var(--button-color);
+  background-image: url("https://www.transparenttextures.com/patterns/swirl.png");
   color: white;
+  /* border: 1px solid #123675;   */
   text-decoration: none;
   border-radius: 15px;
   font-weight: 600;
-  font-size: 1.05em;
+  font-size: 1.25em;
   text-align: center;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -486,7 +571,7 @@ body {
 
 .footer p {
   color: #64B5F6;
-  font-size: 0.95em;
+  font-size: 1.5em;
   font-weight: 500;
 }
 
