@@ -41,7 +41,7 @@ function App() {
     {
       id: 3,
       title: 'Quero agendar uma consulta',
-      url: 'https://wa.me/5547933630178',
+      url: 'https://wa.me/554733630178',
       color: '#123675'
     },
     {
