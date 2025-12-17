@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import './App.css'
 import Bubble from './components/Bubble.jsx'
 import logoImage from './assets/odontofun_logo_512x206.png'
-  // Imagens do carrossel
+
+// Imagens do carrossel
 import image1 from './assets/1.jpg'
 import image2 from './assets/2.jpg'
 import image3 from './assets/3.jpg'
@@ -13,134 +14,210 @@ import image7 from './assets/7.jpg'
 
 function App() {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [isTouch, setIsTouch] = useState(false)
+  const [touchStart, setTouchStart] = useState(null)
+  const [touchEnd, setTouchEnd] = useState(null)
 
-  // 💡 Use as variáveis importadas no array de imagens
-  const images = [
-    image1,
-    image2,
-    image3,
-    image4,
-    image5,
-    image6,
-    image7
-  ]
-  // Links dos botões
+  const images = [image1, image2, image3, image4, image5, image6, image7]
+
   const links = [
     {
       id: 1,
+      title: 'Agendar uma consulta',
+      url: 'https://wa.me/554733630178',
+      color: '#123675'
+    },
+    {
+      id: 3,
+      title: 'Método Odonto Fun',
+      url: 'https://metodoodontofun.com.br',
+      color: '#e7a23b'
+    },
+    {
+      id: 2,
       title: 'Visite Nosso Site',
       url: 'https://lp.odontofunkids.com.br/odontopediatria',
       color: '#2196F3'
     },
     {
-      id: 2,
-      title: 'Método Odonto Fun',
-      url: 'https://metodoodontofun.com.br/masterclass/?fbclid=PAZXh0bgNhZW0CMTEAAafIUFOmMhvAzvFCEKawkQ3AiVeL-VQYnkef5zIPPkF6BbQeKZPZXzNQg1Jjjw_aem_vGuuqR02Wcqwk508Z1UoQg',
-      color: '#e7a23b'
-    },
-    {
-      id: 3,
-      title: 'Quero agendar uma consulta',
-      url: 'https://wa.me/554733630178',
-      color: '#123675'
-    },
-    {
       id: 4,
       title: 'Urgência? Ligue para nós!',
-      url: 'tel:+554733630178', // <-- 🔥 ALTERADO AQUI
+      url: 'tel:+554733630178',
       color: '#FF5722'
     },
-    {
-      id: 5,
-      title: 'Administrativo',
-      url: 'https://wa.me/554784930178',
-      color: '#4CAF50'
-    },
-    {
-      id: 6,
-      title: 'Dúvidas Frequentes',
-      url: 'https://odontofun.com.br/duvidas-frequentes/',
-      color: '#E590DB'
-    }
   ]
+
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % images.length)
+  }, [images.length])
+
+  const prevSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev - 1 + images.length) % images.length)
+  }, [images.length])
+
+  const goToSlide = useCallback((index) => {
+    setCurrentSlide(index)
+  }, [])
 
   // Auto-play do carrossel
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % images.length)
-    }, 4000)
+    const interval = setInterval(nextSlide, 4000)
     return () => clearInterval(interval)
-  }, [images.length])
+  }, [nextSlide])
 
-  const goToSlide = (index) => setCurrentSlide(index)
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % images.length)
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + images.length) % images.length)
+  // Detecta se é touch device
+  useEffect(() => {
+    setIsTouch('ontouchstart' in window || navigator.maxTouchPoints > 0)
+  }, [])
+
+  // Swipe handlers para mobile
+  const minSwipeDistance = 50
+
+  const onTouchStart = (e) => {
+    setTouchEnd(null)
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const onTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > minSwipeDistance
+    const isRightSwipe = distance < -minSwipeDistance
+
+    if (isLeftSwipe) {
+      nextSlide()
+    } else if (isRightSwipe) {
+      prevSlide()
+    }
+  }
+
+  // Calcula número de bolhas baseado no viewport
+  const getBubbleCount = () => {
+    if (typeof window === 'undefined') return 10
+    const width = window.innerWidth
+    if (width < 400) return 8
+    if (width < 600) return 10
+    return 15
+  }
+
+  const [bubbleCount, setBubbleCount] = useState(15)
+
+  useEffect(() => {
+    setBubbleCount(getBubbleCount())
+    
+    const handleResize = () => {
+      setBubbleCount(getBubbleCount())
+    }
+    
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   return (
     <div className="app">
-      {[...Array(15)].map((_, index) => (
-        <Bubble key={index} index={index} totalBubbles={15} />
+      {/* Bolhas decorativas */}
+      {[...Array(bubbleCount)].map((_, index) => (
+        <Bubble key={index} index={index} totalBubbles={bubbleCount} />
       ))}
 
       <div className="container">
         {/* Logo */}
         <div className="logo-section">
-          <img src={logoImage} alt="OdontoFun Logo" className="logo-image" />
+          <img 
+            src={logoImage} 
+            alt="OdontoFun Logo" 
+            className="logo-image"
+            loading="eager"
+            width="512"
+            height="206"
+          />
         </div>
 
-        {/* Carousel */}
-        <div className="carousel-container">
+        {/* Carousel com suporte a swipe */}
+        <div 
+          className="carousel-container"
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
           <div 
             className="carousel-wrapper"
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
           >
             {images.map((image, index) => (
               <div key={index} className="carousel-slide">
-                <img src={image} alt={`Slide ${index + 1}`} />
+                <img 
+                  src={image} 
+                  alt={`Slide ${index + 1}`}
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  draggable="false"
+                />
               </div>
             ))}
           </div>
 
-          {/* Controls */}
-          <button className="carousel-btn prev" onClick={prevSlide}>❮</button>
-          <button className="carousel-btn next" onClick={nextSlide}>❯</button>
+          {/* Controls - ocultos ou menores em touch devices */}
+          <button 
+            className="carousel-btn prev" 
+            onClick={prevSlide}
+            aria-label="Slide anterior"
+          >
+            ❮
+          </button>
+          <button 
+            className="carousel-btn next" 
+            onClick={nextSlide}
+            aria-label="Próximo slide"
+          >
+            ❯
+          </button>
 
           {/* Indicators */}
-          <div className="carousel-indicators">
+          <div className="carousel-indicators" role="tablist">
             {images.map((_, index) => (
               <button
                 key={index}
                 className={`indicator ${currentSlide === index ? 'active' : ''}`}
                 onClick={() => goToSlide(index)}
+                aria-label={`Ir para slide ${index + 1}`}
+                aria-selected={currentSlide === index}
+                role="tab"
               />
             ))}
           </div>
         </div>
 
-        {/* Botões */}
-        <div className="links-container">
+        {/* Botões de Link */}
+        <nav className="links-container" aria-label="Links principais">
           {links.map((link) => (
             <a
               key={link.id}
               href={link.url}
               target={link.url.startsWith('http') ? '_blank' : undefined}
-              rel="noopener noreferrer"
+              rel={link.url.startsWith('http') ? 'noopener noreferrer' : undefined}
               className="link-button"
               style={{ '--button-color': link.color }}
             >
               {link.title}
             </a>
           ))}
-        </div>
+        </nav>
 
         {/* Rodapé */}
-        <div className="footer">
-          <p> Tenha um dia <span style={{ color: '#6abf4b', fontSize:'1.5em' }}>F</span>
-            <span style={{ color: '#e7a23b', fontSize:'1.5em' }}>U</span>
-            <span style={{ color: '#E590DB', fontSize:'1.5em' }}>N</span>
-            <span style={{ color: '#123675', fontSize:'1.5em' }}>!</span> </p>
-          
-        </div>
+        <footer className="footer">
+          <p>
+            Tenha um dia{' '}
+            <span style={{ color: '#6abf4b' }}>F</span>
+            <span style={{ color: '#e7a23b' }}>U</span>
+            <span style={{ color: '#E590DB' }}>N</span>
+            <span style={{ color: '#123675' }}>!</span>
+          </p>
+        </footer>
       </div>
     </div>
   )

@@ -1,60 +1,70 @@
-/* Reset and Base Styles */
+/* Reset Básico */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
+/* Fontes */
 @font-face {
   font-family: 'Knicknack';
   src: url('/knicknack-regular.otf') format('opentype');
-  font-weight: 500; /* Define um peso para o arquivo regular */
+  font-weight: 500;
   font-style: normal;
 }
+
 body {
-  font-family: 'Comfortaa', regular, sans-serif;
+  font-family: 'Comfortaa', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* App Container */
+/* App Container - O Fix Principal */
 .app {
+  /* Ocupa pelo menos a altura total da tela, mas cresce se precisar */
   min-height: 100vh;
-    min-width: 100vw;
+  min-height: 100dvh; /* Garante altura correta em mobile browsers modernos */
+  width: 100%;
+  
+  /* Gradiente Animado */
   background: linear-gradient(135deg, #e3f2fd 0%, #7acaff 50%, #e590db 100%);
   background-size: 200% 200%;
   animation: gradientShift 15s ease infinite;
-  padding: 20px;
+  
+  /* Centralização Flexbox */
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center;     /* Centraliza verticalmente */
+  
+  padding: 20px 15px;      /* Espaço de respiro nas bordas */
   position: relative;
-  overflow: hidden;
+  overflow: hidden;        /* Impede scrollbar causado pelas bolhas */
 }
-/* Enhanced Bubble Component Styles */
+
+/* Animação do Fundo */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* =========================================
+   ESTILO DAS BOLHAS (Mantido Original)
+   ========================================= */
+
 .bubble-enhanced {
   position: absolute;
   bottom: -150px;
   border-radius: 50%;
   animation: bubble-float ease-in-out infinite;
   filter: blur(0.5px);
+  pointer-events: none;
+  z-index: 0; /* Garante que fiquem atrás do card */
   
-  /* Efeito de bolha 3D realista */
   background: 
-    radial-gradient(
-      circle at 30% 30%,
-      rgba(255, 255, 255, 0.9),
-      transparent 45%
-    ),
-    radial-gradient(
-      circle at 70% 70%,
-      rgba(255, 255, 255, 0.4),
-      transparent 70%
-    ),
-    radial-gradient(
-      circle at 50% 50%,
-      var(--bubble-color, rgba(33, 150, 243, 0.3)),
-      transparent
-    );
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), transparent 45%),
+    radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.4), transparent 70%),
+    radial-gradient(circle at 50% 50%, var(--bubble-color, rgba(33, 150, 243, 0.3)), transparent);
   
   box-shadow: 
     inset 0 0 25px rgba(255, 255, 255, 0.5),
@@ -66,7 +76,6 @@ body {
   transform-origin: center center;
 }
 
-/* Brilho principal no topo */
 .bubble-enhanced::before {
   content: '';
   position: absolute;
@@ -74,18 +83,12 @@ body {
   left: 18%;
   width: 45%;
   height: 45%;
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.95),
-    rgba(255, 255, 255, 0.6) 40%,
-    transparent 70%
-  );
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.6) 40%, transparent 70%);
   border-radius: 50%;
   filter: blur(4px);
   animation: shimmer 3s ease-in-out infinite;
 }
 
-/* Reflexo secundário */
 .bubble-enhanced::after {
   content: '';
   position: absolute;
@@ -93,80 +96,25 @@ body {
   right: 12%;
   width: 30%;
   height: 30%;
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.6),
-    transparent 60%
-  );
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.6), transparent 60%);
   border-radius: 50%;
   filter: blur(3px);
 }
 
 @keyframes bubble-float {
-  0% {
-    transform: translateY(0) translateX(0) scale(0.7) rotate(0deg);
-    opacity: 0;
-  }
-  3% {
-    opacity: 0.75;
-  }
-  50% {
-    transform: translateY(-50vh) translateX(var(--x-offset, 30px)) scale(1) rotate(180deg);
-    opacity: 0.85;
-  }
-  97% {
-    opacity: 0.6;
-  }
-  100% {
-    transform: translateY(-115vh) translateX(calc(var(--x-offset, 30px) * 1.5)) scale(1.15) rotate(360deg);
-    opacity: 0;
-  }
+  0% { transform: translateY(0) translateX(0) scale(0.7) rotate(0deg); opacity: 0; }
+  3% { opacity: 0.75; }
+  50% { transform: translateY(-50vh) translateX(var(--x-offset, 30px)) scale(1) rotate(180deg); opacity: 0.85; }
+  97% { opacity: 0.6; }
+  100% { transform: translateY(-115vh) translateX(calc(var(--x-offset, 30px) * 1.5)) scale(1.15) rotate(360deg); opacity: 0; }
 }
 
 @keyframes shimmer {
-  0%, 100% {
-    opacity: 0.9;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.1);
-  }
+  0%, 100% { opacity: 0.9; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
 }
 
-/* Efeito de pop quando a bolha estoura (opcional) */
-.bubble-enhanced.popping {
-  animation: pop 0.3s ease-out forwards;
-}
-
-@keyframes pop {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.3);
-    opacity: 0.5;
-  }
-  100% {
-    transform: scale(0);
-    opacity: 0;
-  }
-}
-/* Animated Gradient */
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* Floating Bubbles */
+/* Bolhas Simples (Legacy) */
 .bubble {
   position: absolute;
   bottom: -100px;
@@ -174,194 +122,98 @@ body {
   opacity: 0.6;
   animation: float-up linear infinite;
   box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+  z-index: 0;
 }
 
 @keyframes float-up {
-  0% {
-    transform: translateY(0) translateX(0) scale(1);
-    opacity: 0;
-  }
-  10% {
-    opacity: 0.6;
-  }
-  90% {
-    opacity: 0.6;
-  }
-  100% {
-    transform: translateY(-100vh) translateX(50px) scale(1.2);
-    opacity: 0;
-  }
+  0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.6; }
+  100% { transform: translateY(-100vh) translateX(50px) scale(1.2); opacity: 0; }
 }
 
-/* Different bubble sizes and colors */
-.bubble:nth-child(1) {
-  width: 60px;
-  height: 60px;
-  left: 10%;
-  background: rgba(33, 150, 243, 0.3);
-  animation-duration: 12s;
-  animation-delay: 0s;
-}
+/* Configuração Individual das Bolhas Legacy */
+.bubble:nth-child(1) { width: 60px; height: 60px; left: 10%; background: rgba(33, 150, 243, 0.3); animation-duration: 12s; animation-delay: 0s; }
+.bubble:nth-child(2) { width: 40px; height: 40px; left: 25%; background: rgba(255, 193, 7, 0.3); animation-duration: 10s; animation-delay: 2s; }
+.bubble:nth-child(3) { width: 80px; height: 80px; left: 40%; background: rgba(100, 181, 246, 0.3); animation-duration: 15s; animation-delay: 4s; }
+.bubble:nth-child(4) { width: 50px; height: 50px; left: 55%; background: rgba(255, 152, 0, 0.3); animation-duration: 11s; animation-delay: 1s; }
+.bubble:nth-child(5) { width: 70px; height: 70px; left: 70%; background: rgba(33, 150, 243, 0.3); animation-duration: 13s; animation-delay: 3s; }
+.bubble:nth-child(6) { width: 45px; height: 45px; left: 85%; background: rgba(255, 193, 7, 0.3); animation-duration: 14s; animation-delay: 5s; }
+.bubble:nth-child(7) { width: 55px; height: 55px; left: 15%; background: rgba(100, 181, 246, 0.3); animation-duration: 16s; animation-delay: 6s; }
+.bubble:nth-child(8) { width: 65px; height: 65px; left: 35%; background: rgba(255, 152, 0, 0.3); animation-duration: 12s; animation-delay: 2.5s; }
+.bubble:nth-child(9) { width: 50px; height: 50px; left: 60%; background: rgba(33, 150, 243, 0.3); animation-duration: 11s; animation-delay: 4.5s; }
+.bubble:nth-child(10) { width: 75px; height: 75px; left: 80%; background: rgba(255, 193, 7, 0.3); animation-duration: 13s; animation-delay: 1.5s; }
 
-.bubble:nth-child(2) {
-  width: 40px;
-  height: 40px;
-  left: 25%;
-  background: rgba(255, 193, 7, 0.3);
-  animation-duration: 10s;
-  animation-delay: 2s;
-}
 
-.bubble:nth-child(3) {
-  width: 80px;
-  height: 80px;
-  left: 40%;
-  background: rgba(100, 181, 246, 0.3);
-  animation-duration: 15s;
-  animation-delay: 4s;
-}
-
-.bubble:nth-child(4) {
-  width: 50px;
-  height: 50px;
-  left: 55%;
-  background: rgba(255, 152, 0, 0.3);
-  animation-duration: 11s;
-  animation-delay: 1s;
-}
-
-.bubble:nth-child(5) {
-  width: 70px;
-  height: 70px;
-  left: 70%;
-  background: rgba(33, 150, 243, 0.3);
-  animation-duration: 13s;
-  animation-delay: 3s;
-}
-
-.bubble:nth-child(6) {
-  width: 45px;
-  height: 45px;
-  left: 85%;
-  background: rgba(255, 193, 7, 0.3);
-  animation-duration: 14s;
-  animation-delay: 5s;
-}
-
-.bubble:nth-child(7) {
-  width: 55px;
-  height: 55px;
-  left: 15%;
-  background: rgba(100, 181, 246, 0.3);
-  animation-duration: 16s;
-  animation-delay: 6s;
-}
-
-.bubble:nth-child(8) {
-  width: 65px;
-  height: 65px;
-  left: 35%;
-  background: rgba(255, 152, 0, 0.3);
-  animation-duration: 12s;
-  animation-delay: 2.5s;
-}
-
-.bubble:nth-child(9) {
-  width: 50px;
-  height: 50px;
-  left: 60%;
-  background: rgba(33, 150, 243, 0.3);
-  animation-duration: 11s;
-  animation-delay: 4.5s;
-}
-
-.bubble:nth-child(10) {
-  width: 75px;
-  height: 75px;
-  left: 80%;
-  background: rgba(255, 193, 7, 0.3);
-  animation-duration: 13s;
-  animation-delay: 1.5s;
-}
+/* =========================================
+   CARD PRINCIPAL (.container)
+   ========================================= */
 
 .container {
-  max-width: 600px;
   width: 100%;
-  border: 3px solid #123675;  
-  background: #fffffff1;
+  max-width: 500px; /* Largura máxima desktop */
+  
+  border: 3px solid #123675;
+  background: #fffffff1; /* Quase opaco */
   backdrop-filter: blur(10px);
-  border-radius: 30px;
+  border-radius: 25px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  
   overflow: hidden;
-  padding: 40px 30px;
-  margin-top: 50px;
+  padding: 25px 20px;
+  
   animation: fadeIn 0.6s ease-in-out;
+  position: relative;
+  z-index: 10; /* Garante que fique acima das bolhas */
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* Logo Section */
+/* =========================================
+   ELEMENTOS INTERNOS
+   ========================================= */
+
+/* Logo */
 .logo-section {
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
 }
 
-.logo {
-  font-size: 3em;
-  font-weight: 800;
-  letter-spacing: -1px;
-  margin-bottom: 5px;
+.logo-image {
+  max-width: 100%;
+  width: min(280px, 70vw); /* Responsivo */
+  height: auto;
+  display: block;
+  margin: 0 auto;
 }
 
-.logo .odonto {
-  color: #2196F3;
-}
-
-.logo .fun {
-  background: linear-gradient(135deg, #FFC107 0%, #FF9800 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.subtitle {
-  color: #64B5F6;
-  font-size: 1em;
-  font-weight: 500;
-  letter-spacing: 2px;
-  text-transform: lowercase;
-}
-
-/* Carousel Styles */
+/* Carrossel */
 .carousel-container {
   position: relative;
   width: 100%;
-  border: 1px solid #123675;  
-  height: 280px;
+  border: 1px solid #123675;
+  aspect-ratio: 16 / 10;
+  max-height: 265px;
   overflow: hidden;
-  border-radius: 20px;
-  margin-bottom: 30px;
+  border-radius: 15px;
+  margin-bottom: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
 .carousel-wrapper {
   display: flex;
-  height: 115%;
+  height: 100%;
   transition: transform 0.5s ease-in-out;
 }
 
 .carousel-slide {
   min-width: 100%;
   height: 100%;
+  flex-shrink: 0;
 }
 
 .carousel-slide img {
@@ -370,7 +222,7 @@ body {
   object-fit: cover;
 }
 
-/* Carousel Buttons */
+/* Botões do Carrossel */
 .carousel-btn {
   position: absolute;
   top: 50%;
@@ -378,10 +230,10 @@ body {
   background: rgba(255, 255, 255, 0.9);
   color: #2196F3;
   border: none;
-  width: 45px;
-  height: 45px;
+  width: clamp(32px, 8vw, 45px);
+  height: clamp(32px, 8vw, 45px);
   border-radius: 50%;
-  font-size: 20px;
+  font-size: clamp(14px, 3.5vw, 20px);
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
@@ -397,28 +249,27 @@ body {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
-.carousel-btn.prev {
-  left: 15px;
+.carousel-btn:active {
+  transform: translateY(-50%) scale(0.95);
 }
 
-.carousel-btn.next {
-  right: 15px;
-}
+.carousel-btn.prev { left: clamp(8px, 2vw, 15px); }
+.carousel-btn.next { right: clamp(8px, 2vw, 15px); }
 
-/* Carousel Indicators */
+/* Indicadores do Carrossel */
 .carousel-indicators {
   position: absolute;
-  bottom: 15px;
+  bottom: clamp(8px, 2vw, 15px);
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 8px;
+  gap: clamp(5px, 1.5vw, 8px);
   z-index: 10;
 }
 
 .indicator {
-  width: 10px;
-  height: 10px;
+  width: clamp(8px, 2vw, 10px);
+  height: clamp(8px, 2vw, 10px);
   border-radius: 50%;
   border: 2px solid white;
   background: rgba(255, 255, 255, 0.5);
@@ -429,113 +280,28 @@ body {
 
 .indicator.active {
   background: white;
-  width: 30px;
+  width: clamp(20px, 5vw, 30px);
   border-radius: 5px;
 }
 
-.indicator:hover {
-  background: rgba(255, 255, 255, 0.8);
-}
-
-/* Links Container */
+/* Botões de Link */
 .links-container {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  margin-bottom: 25px;
-}
-/* Smartphones em portrait (320px - 480px) */
-@media (max-width: 480px) {
-  .app {
-    padding: 10px;
-    align-items: flex-start;
-    padding-top: 20px;
-  }
-
-  .container {
-    border-radius: 20px;
-    padding: 25px 16px;
-  }
-
-  .logo-section {
-    margin-bottom: 20px;
-  }
-
-  .logo-image {
-    max-width: 280px;
-  }
-
-  .subtitle {
-    font-size: 0.85em;
-    letter-spacing: 1.5px;
-  }
-
-  .carousel-container {
-    height: 200px;
-    border-radius: 15px;
-    margin-bottom: 20px;
-  }
-
-  .carousel-btn {
-    width: 32px;
-    height: 32px;
-    font-size: 16px;
-  }
-
-  .carousel-btn.prev {
-    left: 8px;
-  }
-
-  .carousel-btn.next {
-    right: 8px;
-  }
-
-  .carousel-indicators {
-    bottom: 10px;
-    gap: 6px;
-  }
-
-  .indicator {
-    width: 8px;
-    height: 8px;
-  }
-
-  .indicator.active {
-    width: 24px;
-  }
-
-  .links-container {
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-
-  .link-button {
-    padding: 14px 16px;
-    font-size: 0.95em;
-    border-radius: 12px;
-  }
-
-  .footer {
-    padding-top: 15px;
-  }
-
-  .footer p {
-    font-size: 0.85em;
-  }
+  gap: 10px;
+  margin-bottom: 15px;
 }
 
-/* Link Buttons */
 .link-button {
   display: block;
-  padding: 18px 25px;
+  padding: 14px 20px;
   background: var(--button-color);
   background-image: url("https://www.transparenttextures.com/patterns/swirl.png");
   color: white;
-  /* border: 1px solid #123675;   */
   text-decoration: none;
-  border-radius: 15px;
+  border-radius: 12px;
   font-weight: 600;
-  font-size: 1.25em;
+  font-size: 1em;
   text-align: center;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -559,105 +325,96 @@ body {
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
-.link-button:hover::before {
-  left: 100%;
-}
+.link-button:hover::before { left: 100%; }
+.link-button:active { transform: translateY(-1px); }
 
-.link-button:active {
-  transform: translateY(-1px);
-}
-
-/* Footer */
+/* Rodapé */
 .footer {
   text-align: center;
-  padding-top: 20px;
+  padding-top: 15px;
   border-top: 2px solid #e3f2fd;
 }
 
 .footer p {
   color: #123675;
-  font-size: 1.5em;
-  /* A lista de fallback garante que o texto apareça mesmo sem Knicknack */
-  font-family: 'Knicknack', sans-serif; 
+  font-size: 1.2em;
+  font-family: 'Knicknack', sans-serif;
   font-weight: 500;
+  line-height: 1.4;
+  margin: 0;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
+.footer p span {
+  font-size: 1.3em !important;
+}
+
+/* =========================================
+   RESPONSIVIDADE (Clean & Simplificado)
+   ========================================= */
+
+/* Tablets (iPad, etc) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .container { max-width: 520px; padding: 30px 25px; }
+  .carousel-container { max-height: 250px; }
+}
+
+/* Tablets Portrait */
+@media (min-width: 601px) and (max-width: 768px) {
+  .container { max-width: 480px; padding: 28px 22px; }
+  .carousel-container { max-height: 230px; }
+}
+
+/* Celulares Grandes (Pro Max, Plus) */
+@media (min-width: 415px) and (max-width: 600px) {
+  .container { max-width: 400px; padding: 22px 18px; }
+  .carousel-container { max-height: 200px; }
+}
+
+/* Celulares Médios (iPhone Regular, Samsung S series) */
+@media (min-width: 376px) and (max-width: 414px) {
   .container {
-    padding: 30px 20px;
+    width: 100%;
+    max-width: 380px;
+    padding: 20px 16px;
+    border-radius: 20px;
   }
-
-  .logo {
-    font-size: 2.5em;
-  }
-
-  .carousel-container {
-    height: 220px;
-  }
-
-  .carousel-btn {
-    width: 35px;
-    height: 35px;
-    font-size: 16px;
-  }
-
-  .link-button {
-    padding: 16px 20px;
-    font-size: 1em;
-  }
+  .carousel-container { max-height: 180px; border-radius: 12px; }
+  .link-button { padding: 13px 16px; font-size: 0.95em; }
 }
 
-@media (max-width: 480px) {
+/* Celulares Pequenos (SE, Mini) */
+@media (max-width: 375px) {
+  .app { padding: 10px; }
+  .container {
+    padding: 15px 12px;
+    border-radius: 16px;
+    border-width: 2px;
+  }
+  .logo-image { width: 200px; }
+  .carousel-container { max-height: 160px; margin-bottom: 12px; }
+  .link-button { padding: 11px 12px; font-size: 0.9em; }
+  .footer { padding-top: 10px; }
+  .footer p { font-size: 1em; }
+}
+
+/* Orientação Paisagem em Mobile (Evita que o card fique gigante) */
+@media (max-height: 500px) and (orientation: landscape) {
   .app {
     padding: 10px;
-  }
-
-  .container {
-    border-radius: 20px;
-    padding: 25px 15px;
-  }
-
-  .logo {
-    font-size: 2em;
-  }
-
-  .carousel-container {
-    height: 180px;
-    border-radius: 15px;
-  }
-
-  .carousel-btn {
-    width: 30px;
-    height: 30px;
-    font-size: 14px;
-  }
-
-  .carousel-btn.prev {
-    left: 10px;
-  }
-
-  .carousel-btn.next {
-    right: 10px;
-  }
-
-  .link-button {
-    padding: 14px 18px;
-    font-size: 0.95em;
-    border-radius: 12px;
-  }
-}
-@media (max-width: 400px) {
-  .container{
-    overflow-y: hidden;
-    margin-top: -1px;
-    height: 820px;
-
-  } 
-  .footer{
-    margin-top: -15px;
-  }
-  .app{
+    align-items: flex-start; /* Permite scroll se necessário */
+    min-height: auto;
     height: auto;
   }
+  .container { margin: 10px auto; max-width: 480px; }
+  .links-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .link-button { flex: 1 1 45%; }
+}
+
+/* Acessibilidade - Redução de Movimento */
+@media (prefers-reduced-motion: reduce) {
+  .app, .bubble, .bubble-enhanced, .container { animation: none; }
+  .link-button:hover { transform: none; }
 }
