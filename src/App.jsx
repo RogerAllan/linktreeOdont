@@ -29,7 +29,7 @@ function App() {
     {
       id: 1,
       title: 'Visite Nosso Site',
-      url: 'https://odontofun.com.br',
+      url: 'https://lp.odontofunkids.com.br/odontopediatria',
       color: '#2196F3'
     },
     {
