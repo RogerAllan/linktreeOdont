@@ -1,11 +1,16 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import './App.css'
 import Bubble from './components/Bubble.jsx'
 import logoImage from './assets/odontofun_logo_512x206.png'
+// --- NOVO IMPORT: Adicionando a imagem do 'FUN' ---
+import logoFun from './assets/logo2.png'
+
+// IMPORTANTE: Certifique-se que o arquivo existe em src/assets/musica.mp3
+import bgMusic from './assets/musica.mp3' 
 
 // Imagens do carrossel
-import image1 from './assets/1.jpg'
-import image2 from './assets/2.jpg'
+import image1 from './assets/2.jpg'
+import image2 from './assets/1.jpg'
 import image3 from './assets/3.jpg'
 import image4 from './assets/4.jpg'
 import image5 from './assets/5.jpg'
@@ -17,6 +22,10 @@ function App() {
   const [isTouch, setIsTouch] = useState(false)
   const [touchStart, setTouchStart] = useState(null)
   const [touchEnd, setTouchEnd] = useState(null)
+  
+  // Estado da música
+  const [isPlaying, setIsPlaying] = useState(false)
+  const audioRef = useRef(null)
 
   const images = [image1, image2, image3, image4, image5, image6, image7]
 
@@ -25,27 +34,72 @@ function App() {
       id: 1,
       title: 'Agendar uma consulta',
       url: 'https://wa.me/554733630178',
-      color: '#123675'
-    },
-    {
-      id: 3,
-      title: 'Método Odonto Fun',
-      url: 'https://metodoodontofun.com.br',
-      color: '#e7a23b'
+      color: '#6abf4b'
     },
     {
       id: 2,
-      title: 'Visite Nosso Site',
+      title: 'Conheça a Odonto Fun ',
       url: 'https://lp.odontofunkids.com.br/odontopediatria',
-      color: '#2196F3'
+      color: '#47bfe1'
+    },
+    {
+      id: 3,
+      title: 'Urgência? Ligue para nós!',
+      url: 'tel:+554733630178',
+      color: '#e590db'
     },
     {
       id: 4,
-      title: 'Urgência? Ligue para nós!',
-      url: 'tel:+554733630178',
-      color: '#FF5722'
+      title: 'Método Odonto Fun (p/ dentistas)',
+      url: 'https://metodoodontofun.com.br',
+      color: '#e7a23c'
     },
   ]
+
+  // --- LÓGICA DE ÁUDIO COM AUTOPLAY ---
+  
+  const toggleMusic = () => {
+    if (isPlaying) {
+      audioRef.current.pause()
+      setIsPlaying(false)
+    } else {
+      audioRef.current.play().then(() => {
+        setIsPlaying(true)
+      }).catch(e => console.log("Erro ao tocar:", e))
+    }
+  }
+
+  // Tenta tocar ao carregar. Se falhar (bloqueio do navegador),
+  // espera o primeiro clique do usuário para iniciar.
+  useEffect(() => {
+    const playAudio = async () => {
+      try {
+        if (audioRef.current) {
+          audioRef.current.volume = 0.5 // Define volume inicial (50%)
+          await audioRef.current.play()
+          setIsPlaying(true)
+        }
+      } catch (err) {
+        console.log("Autoplay bloqueado pelo navegador. Aguardando interação...")
+        // Adiciona um listener para tocar no primeiro clique/toque
+        const enableAudio = () => {
+            if (audioRef.current) {
+                audioRef.current.play()
+                setIsPlaying(true)
+                // Remove os listeners após conseguir tocar
+                document.removeEventListener('click', enableAudio)
+                document.removeEventListener('touchstart', enableAudio)
+            }
+        }
+        document.addEventListener('click', enableAudio)
+        document.addEventListener('touchstart', enableAudio)
+      }
+    }
+
+    playAudio()
+  }, [])
+  
+  // --- FIM DA LÓGICA DE ÁUDIO ---
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % images.length)
@@ -120,6 +174,46 @@ function App() {
 
   return (
     <div className="app">
+      {/* Elemento de Áudio Invisível */}
+      <audio ref={audioRef} src={bgMusic} loop />
+
+      {/* Botão de Controle de Música Flutuante */}
+      <button 
+        className="music-toggle-btn"
+        onClick={toggleMusic}
+        aria-label={isPlaying ? "Pausar música" : "Tocar música"}
+        style={{
+          position: 'fixed',
+          top: '20px',
+          right: '20px',
+          zIndex: 1000,
+          background: 'rgba(255, 255, 255, 0.9)',
+          border: 'none',
+          borderRadius: '50%',
+          width: '50px',
+          height: '50px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+          color: '#e590db' 
+        }}
+      >
+        {isPlaying ? (
+          // Ícone de Pause
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="6" y="4" width="4" height="16" rx="1" />
+            <rect x="14" y="4" width="4" height="16" rx="1" />
+          </svg>
+        ) : (
+          // Ícone de Nota Musical
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+          </svg>
+        )}
+      </button>
+
       {/* Bolhas decorativas */}
       {[...Array(bubbleCount)].map((_, index) => (
         <Bubble key={index} index={index} totalBubbles={bubbleCount} />
@@ -161,7 +255,7 @@ function App() {
             ))}
           </div>
 
-          {/* Controls - ocultos ou menores em touch devices */}
+          {/* Controls */}
           <button 
             className="carousel-btn prev" 
             onClick={prevSlide}
@@ -208,14 +302,18 @@ function App() {
           ))}
         </nav>
 
-        {/* Rodapé */}
+        {/* Rodapé Alterado */}
         <footer className="footer">
-          <p>
+           {/* Adicionei estilos inline para alinhar o texto com a imagem */}
+          <p style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
             Tenha um dia{' '}
-            <span style={{ color: '#6abf4b' }}>F</span>
-            <span style={{ color: '#e7a23b' }}>U</span>
-            <span style={{ color: '#E590DB' }}>N</span>
-            <span style={{ color: '#123675' }}>!</span>
+            {/* Imagem substituindo as letras coloridas */}
+            <img 
+              src={logoFun} 
+              alt="FUN" 
+              style={{ height: '1.3em', marginTop: '-3px' }} 
+            />
+            {/* <span style={{ color: '#123675' }}>!</span> */}
           </p>
         </footer>
       </div>
@@ -223,4 +321,4 @@ function App() {
   )
 }
 
-export default App
+export default App  
