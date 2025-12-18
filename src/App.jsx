@@ -2,8 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import './App.css'
 import Bubble from './components/Bubble.jsx'
 import logoImage from './assets/odontofun_logo_512x206.png'
-// --- NOVO IMPORT: Adicionando a imagem do 'FUN' ---
-import logoFun from './assets/logo2.png'
+import logoFun from './assets/logo2.png' // Imagem do rodapé
 
 // IMPORTANTE: Certifique-se que o arquivo existe em src/assets/musica.mp3
 import bgMusic from './assets/musica.mp3' 
@@ -33,7 +32,8 @@ function App() {
     {
       id: 1,
       title: 'Agendar uma consulta',
-      url: 'https://wa.me/554733630178',
+      // ATUALIZADO: Adicionado o texto personalizado na URL
+      url: 'https://wa.me/554733630178?text=Vim%20pelo%20instagram%20e%20gostaria%20de%20agendar%20uma%20consulta',
       color: '#6abf4b'
     },
     {
@@ -302,18 +302,16 @@ function App() {
           ))}
         </nav>
 
-        {/* Rodapé Alterado */}
+        {/* Rodapé */}
         <footer className="footer">
-           {/* Adicionei estilos inline para alinhar o texto com a imagem */}
           <p style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
             Tenha um dia{' '}
-            {/* Imagem substituindo as letras coloridas */}
             <img 
               src={logoFun} 
               alt="FUN" 
               style={{ height: '1.3em', marginTop: '-3px' }} 
             />
-            {/* <span style={{ color: '#123675' }}>!</span> */}
+            <span style={{ color: '#123675' }}>!</span>
           </p>
         </footer>
       </div>
@@ -321,4 +319,4 @@ function App() {
   )
 }
 
-export default App  
+export default App
