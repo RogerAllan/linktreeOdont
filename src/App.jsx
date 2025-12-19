@@ -311,7 +311,7 @@ function App() {
               alt="FUN" 
               style={{ height: '1.3em', marginTop: '-3px' }} 
             />
-            <span style={{ color: '#123675' }}>!</span>
+
           </p>
         </footer>
       </div>
